@@ -1,0 +1,6 @@
+sudo apt install nfs-common -y && sudo chmod 777 -R /home/azureuser/data && mkdir -p /home/azureuser/data/nfs && sudo mount -t nfs 10.240.0.4:/home/azureuser/data/nfs /home/azureuser/data/nfs && showmount -e 10.240.0.4 && \
+docker login --username=423815514@qq.com registry.cn-beijing.aliyuncs.com && \
+docker pull registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/k8s-hub:nlai && \
+docker pull registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/cuda-cudnn-opencv-caffe-nnie-mapper:waste-v1.0.0 && \
+docker pull registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/nbshare-base:0.1.6-mem && \
+docker pull registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/rabbish_cpu:v1.0

@@ -1,0 +1,2 @@
+#!/bin/bash
+kubectl create namespace jhub && kubectl create namespace jhubauth && kubectl create namespace jhubauth-gpu-dev && kubectl create namespace gitlab

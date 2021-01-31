@@ -1,0 +1,2 @@
+#!/bin/bash
+sudo apt install nfs-common -y && mkdir /home/azureuser/data && sudo chmod 777 -R /home/azureuser/data && mkdir -p /home/azureuser/data/nfs && sudo mount -t nfs 10.240.0.4:/home/azureuser/data/nfs /home/azureuser/data/nfs && showmount -e 10.240.0.4

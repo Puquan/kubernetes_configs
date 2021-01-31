@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nfs-client-provisioner
+  labels:
+    app: nfs-client-provisioner
+  # replace with namespace where provisioner is deployed
+  namespace: jhub
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nfs-client-provisioner
+  template:
+    metadata:
+      labels:
+        app: nfs-client-provisioner
+    spec:
+      serviceAccountName: nfs-client-provisioner
+      containers:
+        - name: nfs-client-provisioner
+          image: registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/nfs-client-provisioner:v1.0.0
+          volumeMounts:
+            - name: nfs-client-root
+              mountPath: /persistentvolumes
+          env:
+            - name: PROVISIONER_NAME
+              value: jupyterhub
+            - name: NFS_SERVER
+              value: 10.240.0.4
+            - name: NFS_PATH
+              value: /home/azureuser/data/nfs/jupyter
+      volumes:
+        - name: nfs-client-root
+          nfs:
+            server: 10.240.0.4
+            path: /home/azureuser/data/nfs/jupyter

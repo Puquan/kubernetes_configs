@@ -1,0 +1,12 @@
+## docker pass:newland@123
+docker login --username=423815514@qq.com registry.cn-beijing.aliyuncs.com && \
+docker pull registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/nfs-client-provisioner:v1.0.0 && \
+docker pull registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/mysql:5.7.28 && \
+docker pull registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/jupyterhub_auth:1.0.0 && \
+docker pull registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/gitlab:11.5.1 && \
+docker pull registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/redis:v1.0.0 && \
+docker pull registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/postgresql:10 && \
+docker pull registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/k8s-hub:nlai && \
+docker pull registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/cuda-cudnn-opencv-caffe-nnie-mapper:waste-v1.0.0 && \
+docker pull registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/nbshare-base:0.1.6-mem && \
+docker pull registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/rabbish_cpu:v1.0

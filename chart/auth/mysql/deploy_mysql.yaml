@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nledu-mysql-jhubauth
+  namespace: jhubauth
+spec:
+  selector:
+    matchLabels:
+      app: nledu-mysql-jhubauth
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nledu-mysql-jhubauth
+    spec:
+#      nodeSelector:
+#        component-node1: component-node1
+      containers:
+      - name: nledu-mysql-jhubauth
+        image: registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/mysql:5.7.28
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: "MYSQL_ROOT_PASSWORD"
+          value: "newlandedu"
+        - name: TZ
+          value: Asia/Shanghai
+        securityContext:
+          privileged: true
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: data
+        #数据文件 权限需要修改 chmod -R +777 /home/data/mysql
+        hostPath:
+          path: /home/azureuser/data/nfs/mysql/data
+      imagePullSecrets:
+        - name: docker-secret

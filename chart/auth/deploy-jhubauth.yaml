@@ -1,0 +1,40 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: nljhubauth
+  namespace: jhubauth-gpu-dev
+spec:
+  selector:
+    matchLabels:
+      app: nljhubauth
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: nljhubauth
+    spec:
+      containers:
+      - name: nljhubauth
+        image: registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/jupyterhub_auth:1.0.0
+        env:
+          - name: "env_db_user"
+            value: "root"
+          - name: "passwd"
+            value: "newlandedu"
+          - name: "env_db_host"
+            #value: "139.217.176.104"
+            value: "10.240.0.4"
+          - name: "env_db_port"
+            value: "31306"
+          - name: "env_jhub_host"
+            value: "139.217.176.104"
+          - name: "env_jhub_port"
+            value: "30002"
+          - name: "env_jhub_auth_host"
+            value: "139.217.176.104"
+          - name: "env_jhub_auth_port"
+            value: "30001"
+          - name: "env_cookie_timeout"
+            value: "3"
+        ports:
+        - containerPort: 9000

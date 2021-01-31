@@ -1,0 +1,82 @@
+proxy:
+  secretToken: "e35a908e4f59ce164b7e151f01f5d5a787bb4abc3e4e906bf7e3f35dfd10ed6d"
+scheduling:
+  userScheduler:
+    image:
+      name: gcr.azk8s.cn/google_containers/kube-scheduler-amd64
+      #tag: v1.14.8-aliyun.1
+prePuller:
+  pause:
+    image:
+      name: gcr.azk8s.cn/google_containers/pause
+      #tag: 3.1
+hub:
+ extraConfig: |
+    c.JupyterHub.tornado_settings = {'headers': {'Content-Security-Policy': "frame-ancestors 'self' *"}}
+ image:
+  name: registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/k8s-hub
+  tag: nlai
+ db:
+  type: sqlite-memory
+auth:
+ type: custom
+ custom:
+   className: nlaiauthenticator.nlaiauthenticator.NlAiTokenAuthenticator
+   config:
+    secret: 5020408408b8984b2e25b47e544f3f3943b9f86ddd15d501287ed32a70e3f168
+    username_claim_field: username
+    expected_audience: ""
+    auth_url: "http://139.217.176.104:30001"
+    header_name: Authorization
+
+ admin:
+  users: ['matgek',"zhiyuandeng","newland","chenpuquan"]
+cull:
+  timeout: 86400
+singleuser:
+  lifecycleHooks:
+    postStart:
+      exec:
+        command: ["jupyter","nbextension","enable","graffiti-dist/graffiti"]
+  extraEnv:
+    LANGUAGE: zh_CN
+  image:
+    name: registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/nbshare-base
+    tag: 0.1.6-mem
+  profileList:
+    - display_name: "basic image"
+      description: "基础镜像"
+      kubespawner_override:
+        env:
+          MEM_LIMIT: "4294967296"
+          CPU_LIMIT: "2"
+      default: true
+    - display_name: "rubbish project image"
+      description: "智能垃圾分类项目环境-GPU"
+      kubespawner_override:
+        cpu:
+          limit: 4
+          guarantee: 0.1
+        memory:
+          limit: "1192M"
+          guarantee: "1048M"
+        image: registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/cuda-cudnn-opencv-caffe-nnie-mapper:waste-v1.0.0
+    - display_name: "rubbish project image cpu-only"
+      description: "智能垃圾分类项目环境-CPU"
+      kubespawner_override:
+        cpu:
+          limit: 4
+          guarantee: 0.1
+        memory:
+          limit: "1096M"
+        image: registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/rabbish_cpu:v1.0
+  cpu:
+    limit: 2
+    guarantee: 0.1
+  memory:
+    limit: "1096M"
+    guarantee: "1024M"
+  storage:
+    type: dynamic
+    dynamic:
+      storageClass: jupyterhub-storage

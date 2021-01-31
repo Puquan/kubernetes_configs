@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nfs-gitlab-provisioner
+  labels:
+    app: nfs-gitlab-provisioner
+  # replace with namespace where provisioner is deployed
+  namespace: gitlab
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nfs-gitlab-provisioner
+  template:
+    metadata:
+      labels:
+        app: nfs-gitlab-provisioner
+    spec:
+      serviceAccountName: nfs-gitlab-provisioner
+      containers:
+        - name: nfs-gitlab-provisioner
+          image: registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/nfs-client-provisioner:v1.0.0
+          volumeMounts:
+            - name: nfs-gitlab-root
+              mountPath: /persistentvolumes
+          env:
+            - name: PROVISIONER_NAME
+              value: gitlab
+            - name: NFS_SERVER
+              value: 10.240.0.4
+            - name: NFS_PATH
+              value: /home/azureuser/data/nfs/gitlab/gitlab/
+      volumes:
+        - name: nfs-gitlab-root
+          nfs:
+            server: 10.240.0.4
+            path: /home/azureuser/data/nfs/gitlab/gitlab

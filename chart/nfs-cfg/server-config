@@ -1,0 +1,11 @@
+#!/bin/bash
+sudo apt-get install nfs-kernel-server -y && \
+sudo chmod -R 777 /home/azureuser/data && \
+mkdir -p /home/azureuser/data/nfs/mysql/data && \
+mkdir -p /home/azureuser/data/nfs/jupyter && \
+mkdir -p /home/azureuser/data/nfs/gitlab/postgresql && \
+mkdir -p /home/azureuser/data/nfs/gitlab/gitlab && \
+sudo chmod -R 777 /home/azureuser/data/nfs && \
+sudo sed -i '$a/home/azureuser/data/nfs *(rw,no_root_squash,sync,no_subtree_check)' /etc/exports && \
+sudo /etc/init.d/nfs-kernel-server start && sudo /etc/init.d/nfs-kernel-server restart && \
+showmount -e 10.240.0.4

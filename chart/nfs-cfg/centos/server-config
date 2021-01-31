@@ -1,0 +1,11 @@
+#!/bin/bash
+mkdir -p /root/nfs/mysql/data
+mkdir -p /root/nfs/jupyter
+mkdir -p /root/nfs/gitlab/postgresql
+mkdir -p /root/nfs/gitlab/gitlab
+chmod -R 777 /root/nfs
+echo "/root/nfs *(rw,no_root_squash,sync)" >> /etc/exports
+exportfs -r
+exportfs
+systemctl restart rpcbind && systemctl enable rpcbind && systemctl restart nfs && systemctl enable nfs
+showmount -e 192.168.0.86

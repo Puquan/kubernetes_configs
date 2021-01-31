@@ -1,0 +1,2 @@
+#!/bin/bash
+helm upgrade --install jhub ./Chart/jupyterhub --namespace jhub --version=0.8.2 --values config.yaml

@@ -1,0 +1,77 @@
+proxy:
+  secretToken: "e35a908e4f59ce164b7e151f01f5d5a787bb4abc3e4e906bf7e3f35dfd10ed6d"
+scheduling:
+  userScheduler:
+    image:
+      name: registry.aliyuncs.com/google_containers/kube-scheduler
+      tag: v1.14.0
+prePuller:
+  pause:
+    image:
+      name: registry.aliyuncs.com/google_containers/pause
+      tag: 3.1
+hub:
+ extraConfig: |
+    c.JupyterHub.tornado_settings = {'headers': {'Content-Security-Policy': "frame-ancestors 'self' *"}}
+ image:
+  name: registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/k8s-hub
+  tag: nlai
+ db:
+  type: sqlite-memory
+auth:
+ type: custom
+ custom:
+   className: nlaiauthenticator.nlaiauthenticator.NlAiTokenAuthenticator
+   config:
+    secret: 5020408408b8984b2e25b47e544f3f3943b9f86ddd15d501287ed32a70e3f168
+    username_claim_field: username
+    expected_audience: ""
+    auth_url: "http://192.168.68.66:9000"
+    header_name: Authorization
+
+ admin:
+  users: ['admin',"newland"]
+cull:
+  timeout: 8640000
+singleuser:
+  #lifecycleHooks:
+  #  postStart:
+  #    exec:
+  #      command: ["jupyter","nbextension","enable","graffiti-dist/graffiti"]
+  extraEnv:
+    LANGUAGE: zh_CN
+  image:
+    name: registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/nbshare-base
+    tag: 0.1.6-mem
+  profileList:
+    - display_name: "learnincode/nbshare-base"
+      description: "learnincode/nbshare-base SSH 镜像 CPU 2核心 内存 4G"
+      kubespawner_override:
+        env:
+          MEM_LIMIT: "4294967296"
+          CPU_LIMIT: "2"
+      default: true
+    - display_name: " 测试保存实验,截图功能"
+      description: "测试"
+      kubespawner_override:
+        cpu:
+          limit: 2
+          guarantee: 1
+        memory:
+          limit: "4096M"
+          guarantee: "2048M"
+        image: waste-cpu:v1.0.0
+    - display_name: "rubbish project image"
+      description: "智能垃圾分类项目环境 CPU 4核心 内存 8G"
+      kubespawner_override:
+        cpu:
+          limit: 4
+          guarantee: 2
+        memory:
+          limit: "8192M"
+          guarantee: "2048M"
+        image: registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/cuda-cudnn-opencv-caffe-nnie-mapper:waste-v1.0.0
+  storage:
+    type: dynamic
+    dynamic:
+      storageClass: jupyterhub-storage

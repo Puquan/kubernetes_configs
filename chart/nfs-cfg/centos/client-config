@@ -1,0 +1,2 @@
+#!/bin/bash
+mkdir -p /root/nfs && systemctl start nfs && systemctl enable nfs && mount -t nfs 192.168.0.86:/root/nfs /root/nfs && showmount -e 192.168.0.86
