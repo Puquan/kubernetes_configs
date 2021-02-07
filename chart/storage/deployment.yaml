@@ -29,11 +29,13 @@ spec:
             - name: PROVISIONER_NAME
               value: jupyterhub
             - name: NFS_SERVER
-              value: 10.240.0.4
+              #
+              value: 10.240.0.6
             - name: NFS_PATH
               value: /home/azureuser/data/nfs/jupyter
       volumes:
         - name: nfs-client-root
           nfs:
-            server: 10.240.0.4
+            #
+            server: 10.240.0.6
             path: /home/azureuser/data/nfs/jupyter

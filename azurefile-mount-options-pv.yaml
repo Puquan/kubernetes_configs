@@ -4,14 +4,14 @@ metadata:
   name: azurefile
 spec:
   capacity:
-    storage: 5Gi
+    storage: 1000Gi
   accessModes:
     - ReadWriteMany
   storageClassName: azurefile
   azureFile:
     secretName: azure-secret
-    shareName: newland-storage
-     readOnly: false
+    shareName: aksshare
+    readOnly: false
   mountOptions:
   - dir_mode=0777
   - file_mode=0777

@@ -15,10 +15,10 @@ spec:
         memory: 256Mi
     volumeMounts:
       - name: azure
-        mountPath: /mnt/azure
+        mountPath: /home/azureuser/
   volumes:
   - name: azure
     azureFile:
       secretName: azure-secret
-      shareName: newland-storage
-      readOnly: false        
+      shareName: save1
+      readOnly: false

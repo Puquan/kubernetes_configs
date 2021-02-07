@@ -5,6 +5,19 @@ scheduling:
     image:
       name: gcr.azk8s.cn/google_containers/kube-scheduler-amd64
       #tag: v1.14.8-aliyun.1
+      #try
+      enabled: true
+  podPriority:
+    enabled: true
+  userPlaceholder:
+    enabled: true
+    replicas: 3
+
+cull:
+  enabled: true
+  timeout: 86400
+  every: 300
+
 prePuller:
   pause:
     image:
@@ -30,9 +43,8 @@ auth:
     header_name: Authorization
 
  admin:
-  users: ['matgek',"zhiyuandeng","newland","chenpuquan"]
-cull:
-  timeout: 86400
+  users: ['matgek',"zhiyuandeng","newland","chenpuquan","yexiayi"]
+
 singleuser:
   lifecycleHooks:
     postStart:
@@ -51,31 +63,32 @@ singleuser:
           MEM_LIMIT: "4294967296"
           CPU_LIMIT: "2"
       default: true
-    - display_name: "rubbish project image"
-      description: "智能垃圾分类项目环境-GPU"
-      kubespawner_override:
-        cpu:
-          limit: 4
-          guarantee: 0.1
-        memory:
-          limit: "1192M"
-          guarantee: "1048M"
-        image: registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/cuda-cudnn-opencv-caffe-nnie-mapper:waste-v1.0.0
+  #  - display_name: "rubbish project image"
+  #    description: "智能垃圾分类项目环境-GPU"
+  #    kubespawner_override:
+  #      cpu:
+  #        limit: 4
+  #        guarantee: 0.1
+  #      memory:
+  #        limit: "1192M"
+  #        guarantee: "1048M"
+  #      image: registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/cuda-cudnn-opencv-caffe-nnie-mapper:waste-v1.0.0
     - display_name: "rubbish project image cpu-only"
       description: "智能垃圾分类项目环境-CPU"
       kubespawner_override:
         cpu:
-          limit: 4
+          limit: 0.5
           guarantee: 0.1
         memory:
-          limit: "1096M"
+          limit: "1024M"
+          guarantee: "512M"
         image: registry.cn-beijing.aliyuncs.com/opennb/jupyterhub/rabbish_cpu:v1.0
   cpu:
-    limit: 2
-    guarantee: 0.1
+    limit: 0.1
+    guarantee: 0.05
   memory:
-    limit: "1096M"
-    guarantee: "1024M"
+    limit: "1024M"
+    guarantee: "512M"
   storage:
     type: dynamic
     dynamic:
